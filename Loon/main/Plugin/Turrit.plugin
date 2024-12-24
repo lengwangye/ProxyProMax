@@ -1,5 +1,5 @@
-#!name = Turrit (Final Optimized)
-#!desc = Telegram外部链接跳转至Turrit（全面优化版）
+#!name = Turrit
+#!desc = Telegram外部链接跳转至Turrit（支持更多场景）
 #!openUrl = https://apps.apple.com/app/id6471781238
 #!author = sooyaaabo[https://github.com/sooyaaabo]
 #!tag = 功能增强
@@ -12,13 +12,19 @@
 #!date = 2024-12-25 12:00
 
 [Rewrite]
-# Telegram普通链接（如群组或用户）重定向到Turrit协议
-^https?:\/\/(www\.)?t\.me\/([^?\/]+).*$ 307 turrit://resolve?domain=$2
+# 1. Telegram普通链接（如群组或用户）重定向到Turrit协议
+^https?:\/\/(www\.)?t\.me\/([^?\/]+)$ 307 turrit://resolve?domain=$2
 
-# Telegram频道链接重定向到Turrit协议
+# 2. Telegram普通链接（包含查询参数）重定向到Turrit协议
+^https?:\/\/(www\.)?t\.me\/([^?\/]+)\?.*$ 307 turrit://resolve?domain=$2
+
+# 3. Telegram消息链接（带消息ID）重定向到Turrit协议
+^https?:\/\/(www\.)?t\.me\/([^?\/]+)\/(\d+).*$ 307 turrit://resolve?domain=$2&message=$3
+
+# 4. Telegram频道链接重定向到Turrit协议
 ^https?:\/\/(www\.)?t\.me\/s\/([^?\/]+).*$ 307 turrit://resolve?channel=$2
 
-# Telegram Bot 链接重定向
+# 5. Telegram Bot 链接重定向
 ^https?:\/\/(www\.)?t\.me\/([^?\/]+)_bot.*$ 307 turrit://resolve?bot=$2
 
 [MitM]
