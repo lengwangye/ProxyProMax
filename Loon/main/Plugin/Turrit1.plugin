@@ -1,39 +1,14 @@
-#!name= Turrit URL Redirect
+#!name= tg外链直跳Turrit
 #!desc= Telegram 链接自动跳转至 Turrit 客户端
-#!openUrl=
-#!author= YourName[https://your-github-link]
-#!homepage= https://github.com/YourRepo/TurritPlugin
+#!author= YourName[https://github.com/yourname]
+#!homepage= https://github.com/your-repo/turrit-plugin
 #!icon= https://raw.githubusercontent.com/Orz-3/mini/master/Color/Telegram.png
 #!system= iOS,iPadOS
 #!tag= 功能增强,Telegram
 
-[General]
-Title = Turrit URL Redirect
-Description = 自动将 Telegram 链接跳转到 Turrit 应用
-Author = YourName
-Version = 1.0.0
+[rewrite]
+# 拦截 t.me 链接并重定向到 turrit 协议
+^https?:\/\/t\.me\/(.*) 302 turrit://resolve?domain=$1
 
-[Script]
-# 内嵌脚本，直接处理跳转
-TurritRedirect = type=http-request, pattern=^https?:\/\/t\.me\/.*$, requires-body=false, timeout=10, script-content=
-(() => {
-  const telegramUrlPattern = /^https?:\/\/t\.me\/(.*)$/;
-
-  if ($request.url.match(telegramUrlPattern)) {
-    const match = $request.url.match(telegramUrlPattern);
-    const turritLink = `turrit://resolve?domain=${match[1]}`; // 替换为 Turrit 协议链接
-
-    // 返回跳转到 Turrit 的响应
-    $done({
-      response: {
-        status: 302,
-        headers: {
-          Location: turritLink,
-        },
-      },
-    });
-  } else {
-    // 如果不是符合条件的链接，正常返回
-    $done({});
-  }
-})();
+[mitm]
+hostname = t.me
