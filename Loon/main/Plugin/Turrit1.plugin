@@ -1,0 +1,30 @@
+[General]
+Title = Turrit URL Jump
+Description = 用于将 Telegram 链接跳转到 Turrit
+Author = YourName
+Version = 1.0.0
+
+[Script]
+# 内嵌的脚本，直接处理跳转
+TurritJump = type=http-request, pattern=^https?:\/\/t\.me\/.*$, requires-body=false, timeout=10, script-content=
+(() => {
+  const telegramUrlPattern = /^https?:\/\/t\.me\/(.*)$/;
+
+  if ($request.url.match(telegramUrlPattern)) {
+    const match = $request.url.match(telegramUrlPattern);
+    const turritLink = `turrit://resolve?domain=${match[1]}`; // 替换 Telegram 链接到 Turrit 协议
+
+    // 直接跳转到 Turrit 应用
+    $done({
+      response: {
+        status: 302,
+        headers: {
+          Location: turritLink,
+        },
+      },
+    });
+  } else {
+    // 如果不是符合条件的链接，正常返回
+    $done({});
+  }
+})();
