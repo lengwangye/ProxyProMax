@@ -1,20 +1,29 @@
+#!name= Turrit URL Redirect
+#!desc= Telegram 链接自动跳转至 Turrit 客户端
+#!openUrl=
+#!author= YourName[https://your-github-link]
+#!homepage= https://github.com/YourRepo/TurritPlugin
+#!icon= https://raw.githubusercontent.com/Orz-3/mini/master/Color/Telegram.png
+#!system= iOS,iPadOS
+#!tag= 功能增强,Telegram
+
 [General]
-Title = Turrit URL Jump
-Description = 用于将 Telegram 链接跳转到 Turrit
+Title = Turrit URL Redirect
+Description = 自动将 Telegram 链接跳转到 Turrit 应用
 Author = YourName
 Version = 1.0.0
 
 [Script]
-# 内嵌的脚本，直接处理跳转
-TurritJump = type=http-request, pattern=^https?:\/\/t\.me\/.*$, requires-body=false, timeout=10, script-content=
+# 内嵌脚本，直接处理跳转
+TurritRedirect = type=http-request, pattern=^https?:\/\/t\.me\/.*$, requires-body=false, timeout=10, script-content=
 (() => {
   const telegramUrlPattern = /^https?:\/\/t\.me\/(.*)$/;
 
   if ($request.url.match(telegramUrlPattern)) {
     const match = $request.url.match(telegramUrlPattern);
-    const turritLink = `turrit://resolve?domain=${match[1]}`; // 替换 Telegram 链接到 Turrit 协议
+    const turritLink = `turrit://resolve?domain=${match[1]}`; // 替换为 Turrit 协议链接
 
-    // 直接跳转到 Turrit 应用
+    // 返回跳转到 Turrit 的响应
     $done({
       response: {
         status: 302,
