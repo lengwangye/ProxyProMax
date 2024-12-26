@@ -7,8 +7,7 @@
 #!tag= 功能增强,Telegram
 
 [rewrite]
-# 拦截 t.me 链接并重定向到 turrit 协议
-^https?:\/\/t\.me\/(.*) 302 turrit://resolve?domain=$1
+(https:\/\/)?t\.me\/(.+) 302 turrit://resolve?domain=$2
 
 [mitm]
 hostname = t.me
